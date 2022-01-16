@@ -32,7 +32,7 @@ switch ($number) {
         Break
     }
     4 {
-        # 对 anaconda 不友好
+        # 对 anaconda 不友好，annconda 虚拟环境不显示信息
         # Avit 是一个极为简单的主题，其主 Prompt 是由两行构成的，第一行显示路径、git 版本控制信息和日期等等，第二行显示每次输入的命令
         Set-PoshPrompt Avit
         Break
@@ -60,7 +60,8 @@ switch ($number) {
 
 
 
-function Set-CurrentWorkingDirectory {
+function Set-CurrentWorkingDirectory
+{
     param
     (
         $Path,
@@ -69,12 +70,15 @@ function Set-CurrentWorkingDirectory {
         $StackName,
         $UseTransaction
     )
-    if ($Path -and ($Path.Contains('...'))) {
+    if ($Path -and ($Path.Contains('...')))
+    {
         $a = [System.Text.RegularExpressions.Regex]::Split($Path, "(\.{3,})");
-        for ($i = 0; $i -lt $a.Length; $i++) {
+        for ($i = 0; $i -lt $a.Length; $i++)
+        {
             $e = $a[$i];
             $l = $e.Length;
-            if (($l -gt 2) -and ($e -eq "".PadRight($l, '.'))) {
+            if (($l -gt 2) -and ($e -eq "".PadRight($l, '.')))
+            {
                 $a[$i] = ".." + [System.String]::Concat([System.Linq.Enumerable]::Repeat("\..", $l - 2))
             }
         }
@@ -83,7 +87,7 @@ function Set-CurrentWorkingDirectory {
     return Set-Location @PSBoundParameters
 }
 
-Set-Alias Set-Location Set-CurrentWorkingDirectory -Option "AllScope"
+Set-Alias cd Set-CurrentWorkingDirectory -Option "AllScope"
 
 function Get-ChildItem-Wide { # ls
     param
