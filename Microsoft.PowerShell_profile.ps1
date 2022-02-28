@@ -2,14 +2,14 @@
 Import-Module oh-my-posh
 $env:POSH_GIT_ENABLED = $true
 
-Import-Module posh-git
-Import-Module 'G:\posh-git-1.0.0\src\posh-git.psd1'
+# Import-Module posh-git
+# Import-Module 'G:\posh-git-1.0.0\src\posh-git.psd1'
 set-Alias Set-Theme Set-PoshPrompt
 $MY_POSH_THEMES = "~/themes/" 
 $blogSource = "D:\Blog\Blog\source\_posts\"
 $allfile = "*"
 
-
+Set-PoshPrompt Agnoster
 
 # 挑选主题
 $number = 2
@@ -57,115 +57,6 @@ switch ($number) {
 # oh-my-posh --init --shell pwsh --config $MY_POSH_THEMES/_emodipt.omp.json | Invoke-Expression 
 
 
-
-
-
-function Set-CurrentWorkingDirectory
-{
-    param
-    (
-        $Path,
-        $LiteralPath,
-        $PassThru,
-        $StackName,
-        $UseTransaction
-    )
-    if ($Path -and ($Path.Contains('...')))
-    {
-        $a = [System.Text.RegularExpressions.Regex]::Split($Path, "(\.{3,})");
-        for ($i = 0; $i -lt $a.Length; $i++)
-        {
-            $e = $a[$i];
-            $l = $e.Length;
-            if (($l -gt 2) -and ($e -eq "".PadRight($l, '.')))
-            {
-                $a[$i] = ".." + [System.String]::Concat([System.Linq.Enumerable]::Repeat("\..", $l - 2))
-            }
-        }
-        $PSBoundParameters['Path'] = [System.String]::Concat($a)
-    }
-    return Set-Location @PSBoundParameters
-}
-
-Set-Alias cd Set-CurrentWorkingDirectory -Option "AllScope"
-
-function Get-ChildItem-Wide { # ls
-    param
-    (
-        $Path,
-        $LiteralPath,
-        $Filter,
-        $Include,
-        $Exclude,
-        $Recurse,
-        $Force,
-        $Name,
-        $UseTransaction,
-        $Attributes,
-        $Depth,
-        $Directory,
-        $File,
-        $Hidden,
-        $ReadOnly,
-        $System
-    )
-    Get-ChildItem @PSBoundParameters | Format-Wide -AutoSize
-}
-
-function Get-ChildItem-All { # lla
-    param
-    (
-        $Path,
-        $LiteralPath,
-        $Filter,
-        $Include,
-        $Exclude,
-        $Recurse,
-        $Force,
-        $Name,
-        $UseTransaction,
-        $Attributes,
-        $Depth,
-        $Directory,
-        $File,
-        $Hidden,
-        $ReadOnly,
-        $System
-    )
-    if ($Attributes) {
-        $PSBoundParameters.Remove('Attributes');
-    }
-    Get-ChildItem -Attributes ReadOnly, Hidden, System, Normal, Archive, Directory, Encrypted, NotContentIndexed, Offline, ReparsePoint, SparseFile, Temporary @PSBoundParameters
-}
-
-function Get-ChildItem-All-Wide { # la
-    param
-    (
-        $Path,
-        $LiteralPath,
-        $Filter,
-        $Include,
-        $Exclude,
-        $Recurse,
-        $Force,
-        $Name,
-        $UseTransaction,
-        $Attributes,
-        $Depth,
-        $Directory,
-        $File,
-        $Hidden,
-        $ReadOnly,
-        $System
-    )
-    Get-ChildItem-All @PSBoundParameters | Format-Wide -AutoSize
-}
-
-Set-Alias ls Get-ChildItem-Wide -Option "AllScope"
-Set-Alias ll Get-ChildItem
-Set-Alias lla Get-ChildItem-All
-Set-Alias la Get-ChildItem-All-Wide
-
 function which {
     $results = New-Object System.Collections.Generic.List[System.Object];
     foreach ($command in $args) {
@@ -194,6 +85,11 @@ function pyDir {
     Set-Location "D:\NewPythonCodes\"
 }
 
+function stm32Dir {
+    Set-Location "E:\CubeMX_STM32\winter_vacation"
+    
+}
+
 set-Alias touch New-Item
 
 function c {
@@ -214,5 +110,93 @@ function f {
 function g {
     Set-Location "g:\"
 }
+
+
+
+function Get-ChildItem-Wide
+{
+    param
+    (
+        $Path,
+        $LiteralPath,
+        $Filter,
+        $Include,
+        $Exclude,
+        $Recurse,
+        $Force,
+        $Name,
+        $UseTransaction,
+        $Attributes,
+        $Depth,
+        $Directory,
+        $File,
+        $Hidden,
+        $ReadOnly,
+        $System
+    )
+    Get-ChildItem @PSBoundParameters | Format-Wide -AutoSize
+}
+
+function Get-ChildItem-All
+{
+    param
+    (
+        $Path,
+        $LiteralPath,
+        $Filter,
+        $Include,
+        $Exclude,
+        $Recurse,
+        $Force,
+        $Name,
+        $UseTransaction,
+        $Attributes,
+        $Depth,
+        $Directory,
+        $File,
+        $Hidden,
+        $ReadOnly,
+        $System
+    )
+    if ($Attributes)
+    {
+        $PSBoundParameters.Remove('Attributes');
+    }
+    Get-ChildItem -Attributes ReadOnly, Hidden, System, Normal, Archive, Directory, Encrypted, NotContentIndexed, Offline, ReparsePoint, SparseFile, Temporary @PSBoundParameters
+}
+
+function Get-ChildItem-All-Wide
+{
+    param
+    (
+        $Path,
+        $LiteralPath,
+        $Filter,
+        $Include,
+        $Exclude,
+        $Recurse,
+        $Force,
+        $Name,
+        $UseTransaction,
+        $Attributes,
+        $Depth,
+        $Directory,
+        $File,
+        $Hidden,
+        $ReadOnly,
+        $System
+    )
+    Get-ChildItem-All @PSBoundParameters | Format-Wide -AutoSize
+}
+
+Set-Alias ls Get-ChildItem-Wide -Option "AllScope"
+Set-Alias ll Get-ChildItem
+Set-Alias lla Get-ChildItem-All
+Set-Alias la Get-ChildItem-All-Wide
+
+
+
+# Load posh-git example profile
+# . 'D:\My github repo\posh-git\profile.example.ps1'
 
 
